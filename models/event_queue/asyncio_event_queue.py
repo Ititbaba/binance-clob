@@ -13,5 +13,5 @@ class AsyncioEventQueue(EventQueue):
     async def get(self) -> UpdateEvent:
         return await self._queue.get()
 
-    def qsize(self) -> int:
+    def queue_size(self) -> int:
         return self._queue.qsize()
