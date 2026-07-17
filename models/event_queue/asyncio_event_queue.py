@@ -1,18 +1,9 @@
 import asyncio
-from abc import ABC, abstractmethod
-
+from models.event_queue import EventQueue
 from schemas.market_data import UpdateEvent
 
 
-class EventQueue(ABC):
-    @abstractmethod
-    async def put(self, event: UpdateEvent) -> None: ...
-
-    @abstractmethod
-    async def get(self) -> UpdateEvent: ...
-
-
-class AsyncioEventQueue:
+class AsyncioEventQueue(EventQueue):
     def __init__(self):
         self._queue: "asyncio.Queue[UpdateEvent]" = asyncio.Queue()
 
@@ -21,3 +12,6 @@ class AsyncioEventQueue:
 
     async def get(self) -> UpdateEvent:
         return await self._queue.get()
+
+    def qsize(self) -> int:
+        return self._queue.qsize()
