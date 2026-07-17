@@ -1,7 +1,7 @@
 import json
 from typing import AsyncIterator
 
-import requests
+import httpx
 import websockets
 
 from config import settings
@@ -13,16 +13,17 @@ class BinanceClient:
     def __init__(self, symbol: str):
         self.symbol = symbol
 
-    def fetch_snapshot(self) -> Snapshot:
-        response = requests.get(
-            settings.binance_rest_url,
-            params={"symbol": self.symbol.upper(), "limit": settings.binance_depth_limit},
-            timeout=10,
-        )
+    async def fetch_snapshot(self) -> Snapshot:
+        async with httpx.AsyncClient() as client:
+            response = await client.get(
+                settings.binance_rest_url,
+                params={"symbol": self.symbol.upper(), "limit": settings.binance_depth_limit},
+                timeout=10,
+            )
         response.raise_for_status()
         return Parser.parse_snapshot(response.json())
 
-    async def stream_diffs(self) -> AsyncIterator[UpdateEvent]:
+    async def stream_diff_events(self) -> AsyncIterator[UpdateEvent]:
         url = f"{settings.binance_ws_base_url}/{self.symbol.lower()}@depth"
         async with websockets.connect(url) as ws:
             async for raw_event in ws:
