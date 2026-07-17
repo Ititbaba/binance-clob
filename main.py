@@ -4,13 +4,13 @@ from config import settings
 from models.binance_client import BinanceClient
 from models.order_book import OrderBook
 from models.order_book_synchronizer import OrderBookSynchronizer
-from models.event_reader import WebSocketReader
+from models.event_reader import EventReader
 
 
 async def main() -> None:
     binance_client = BinanceClient(symbol=settings.symbol)
     order_book = OrderBook(symbol=settings.symbol)
-    reader = WebSocketReader(binance_client)
+    reader = EventReader(binance_client)
     order_book_synchronizer = OrderBookSynchronizer(
         symbol=settings.symbol, binance_client=binance_client, order_book=order_book, queue=reader.queue
     )

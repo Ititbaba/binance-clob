@@ -1,7 +1,7 @@
-import asyncio
 from enum import Enum, auto
 
 from models.binance_client import BinanceClient
+from models.event_queue import EventQueue
 from models.order_book import OrderBook
 from schemas.market_data import UpdateEvent
 
@@ -13,16 +13,12 @@ class SyncState(Enum):
 
 
 class OrderBookSynchronizer:
-    """Owns snapshot sync, bridging, gap detection, and update application.
-    No knowledge of WebSocket connections - just consumes UpdateEvents from
-    a queue supplied by the caller."""
-
     def __init__(
         self,
         symbol: str,
         binance_client: BinanceClient,
         order_book: OrderBook,
-        queue: "asyncio.Queue[UpdateEvent]",
+        queue: EventQueue,
     ):
         self.symbol = symbol
         self.binance_client = binance_client
