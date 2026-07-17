@@ -3,7 +3,6 @@ from abc import ABC, abstractmethod
 from schemas.market_data import UpdateEvent
 
 
-
 class EventQueue(ABC):
     @abstractmethod
     async def put(self, event: UpdateEvent) -> None: ...
