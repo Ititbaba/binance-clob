@@ -9,8 +9,11 @@ class PriceLevel:
     price: Decimal
     quantity: Decimal
 
+    def to_list(self) -> list:
+        return [str(self.price), str(self.quantity)]
+
     def to_json(self) -> str:
-        return json.dumps([str(self.price), str(self.quantity)])
+        return json.dumps(self.to_list())
 
 
 @dataclass(frozen=True)
