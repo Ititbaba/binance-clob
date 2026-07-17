@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 from models.event_queue import EventQueue
-from models.logger import get_logger
+from logger import get_logger
 
 logger = get_logger(__name__)
 
