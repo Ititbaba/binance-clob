@@ -1,11 +1,13 @@
 from enum import Enum, auto
 
+from logger import get_logger
 from models.binance_client import BinanceClient
 from models.event_queue import EventQueue
 from models.monitor import Monitor
 from models.order_book import OrderBook
 from schemas.market_data import Snapshot, UpdateEvent
 
+logger = get_logger(__name__)
 
 class SyncState(Enum):
     BUFFERING = auto()
@@ -67,7 +69,8 @@ class OrderBookSynchronizer:
         while True:
             try:
                 return await self.binance_client.fetch_snapshot()
-            except Exception:
+            except Exception as error:
+                logger.warning("Failed to fetch snapshot: %s", error)
                 self.monitor.record_snapshot_fetch_error()
 
     def _is_gap(self, event: UpdateEvent) -> bool:

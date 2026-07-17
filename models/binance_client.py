@@ -5,8 +5,11 @@ import httpx
 import websockets
 
 from config import settings
+from logger import get_logger
 from models.parser import MessageParseError, Parser
 from schemas.market_data import Snapshot, UpdateEvent
+
+logger = get_logger(__name__)
 
 
 class BinanceClient:
@@ -29,6 +32,7 @@ class BinanceClient:
             async for raw_event in ws:
                 try:
                     event = Parser.parse_diff_event(json.loads(raw_event))
-                except (json.JSONDecodeError, MessageParseError):
+                except (json.JSONDecodeError, MessageParseError) as error:
+                    logger.warning("Failed to parse diff event: %s", error)
                     continue
                 yield event
