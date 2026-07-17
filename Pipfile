@@ -7,6 +7,9 @@ name = "pypi"
 requests = "*"
 websockets = "*"
 bintrees = "*"
+python-dotenv = "*"
+pydantic-settings = "*"
+httpx = "*"
 
 [dev-packages]
 
