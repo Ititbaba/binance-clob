@@ -4,7 +4,7 @@ from config import settings
 from models.binance_client import BinanceClient
 from models.order_book import OrderBook
 from models.order_book_synchronizer import OrderBookSynchronizer
-from models.websocket_reader import WebSocketReader
+from models.event_reader import WebSocketReader
 
 
 async def main() -> None:
