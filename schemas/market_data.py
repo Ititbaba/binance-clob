@@ -1,3 +1,4 @@
+import json
 from dataclasses import dataclass
 from decimal import Decimal
 from typing import List
@@ -8,12 +9,25 @@ class PriceLevel:
     price: Decimal
     quantity: Decimal
 
+    def to_json(self) -> str:
+        return json.dumps([str(self.price), str(self.quantity)])
+
 
 @dataclass(frozen=True)
 class Snapshot:
     last_update_id: int
     bids: List[PriceLevel]
     asks: List[PriceLevel]
+
+    def to_json(self) -> str:
+        return json.dumps(
+            {
+                "lastUpdateId": self.last_update_id,
+                "bids": [level.to_list() for level in self.bids],
+                "asks": [level.to_list() for level in self.asks],
+            },
+            indent=2,
+        )
 
 
 @dataclass(frozen=True)
@@ -24,3 +38,17 @@ class UpdateEvent:
     final_update_id: int
     bids: List[PriceLevel]
     asks: List[PriceLevel]
+
+    def to_json(self) -> str:
+        return json.dumps(
+            {
+                "e": "depthUpdate",
+                "E": self.event_time,
+                "s": self.symbol,
+                "U": self.first_update_id,
+                "u": self.final_update_id,
+                "b": [level.to_list() for level in self.bids],
+                "a": [level.to_list() for level in self.asks],
+            },
+            indent=2,
+        )

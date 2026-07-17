@@ -1,3 +1,4 @@
+import json
 from decimal import Decimal
 from typing import Optional, Tuple
 
@@ -43,3 +44,16 @@ class OrderBook:
 
     def best_ask(self) -> Optional[Tuple[Decimal, Decimal]]:
         return self.asks.min_item() if self.asks else None
+
+    def to_json(self, depth: int = 10) -> str:
+        bids = list(reversed(list(self.bids.items())))[:depth]
+        asks = list(self.asks.items())[:depth]
+
+        return json.dumps(
+            {
+                "lastUpdateId": self.last_update_id,
+                "bids": [[str(price), str(quantity)] for price, quantity in bids],
+                "asks": [[str(price), str(quantity)] for price, quantity in asks],
+            },
+            indent=2,
+        )
