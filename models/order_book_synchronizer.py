@@ -40,7 +40,12 @@ class OrderBookSynchronizer:
                     self.monitor.record_gap_detected()
                     self.state = SyncState.BUFFERING
                 else:
-                    self.order_book.apply_diff_event(event)
+                    try:
+                        self.order_book.apply_diff_event(event)
+                    except Exception as error:
+                        logger.warning("Failed to apply update event: %s", error)
+                        self.state = SyncState.BUFFERING
+                        continue
                     self.monitor.record_event_applied()
 
     async def _resync(self) -> None:
@@ -56,8 +61,13 @@ class OrderBookSynchronizer:
             else:
                 snapshot = await self._fetch_snapshot()  # event.first_update_id > snapshot.last_update_id + 1
 
-        self.order_book.apply_snapshot(snapshot)
-        self.order_book.apply_diff_event(event)
+        try:
+            self.order_book.apply_snapshot(snapshot)
+            self.order_book.apply_diff_event(event)
+        except Exception as error:
+            logger.warning("Failed to apply snapshot/bridge event during resync: %s", error)
+            return
+
         self.monitor.record_event_applied()
 
         self.state = SyncState.SYNCED

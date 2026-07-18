@@ -32,10 +32,7 @@ class OrderBook:
     @staticmethod
     def _apply_level(tree: RBTree, level: PriceLevel) -> None:
         if level.quantity == 0:
-            try:
-                tree.remove(level.price)
-            except KeyError:
-                pass
+            tree.remove(level.price)
         else:
             tree.insert(level.price, level.quantity)
 
