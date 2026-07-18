@@ -50,13 +50,11 @@ class OrderBookSynchronizer:
         snapshot = await self._fetch_snapshot()
         event = await self._queue.get()
 
-        while True:
+        while event.final_update_id <= snapshot.last_update_id or event.first_update_id > snapshot.last_update_id + 1:
             if event.final_update_id <= snapshot.last_update_id:
                 event = await self._queue.get()
-                continue
-            if event.first_update_id <= snapshot.last_update_id + 1:
-                break
-            snapshot = await self._fetch_snapshot()  # event.first_update_id > snapshot.last_update_id + 1
+            else:
+                snapshot = await self._fetch_snapshot()  # event.first_update_id > snapshot.last_update_id + 1
 
         self.order_book.apply_snapshot(snapshot)
         self.order_book.apply_diff_event(event)
