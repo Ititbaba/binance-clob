@@ -1,10 +1,10 @@
 from enum import Enum, auto
 
-from logger import get_logger
-from models.binance_client import BinanceClient
-from models.event_queue import EventQueue
-from models.monitor import Monitor
-from models.order_book import OrderBook
+from utils.logger import get_logger
+from core.binance_client import BinanceClient
+from core.event_queue import EventQueue
+from core.monitor import Monitor
+from core.order_book import OrderBook
 from schemas.market_data import Snapshot, UpdateEvent
 
 logger = get_logger(__name__)

@@ -1,7 +1,7 @@
-from logger import get_logger
-from models.binance_client import BinanceClient
-from models.event_queue import AsyncioEventQueue
-from models.monitor import Monitor
+from utils.logger import get_logger
+from core.binance_client import BinanceClient
+from core.event_queue import AsyncioEventQueue
+from core.monitor import Monitor
 
 logger = get_logger(__name__)
 

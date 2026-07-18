@@ -3,8 +3,8 @@ import time
 from dataclasses import dataclass
 from typing import Optional
 
-from models.event_queue import EventQueue
-from logger import get_logger
+from core.event_queue import EventQueue
+from utils.logger import get_logger
 
 logger = get_logger(__name__)
 

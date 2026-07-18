@@ -5,8 +5,8 @@ import httpx
 import websockets
 
 from config import settings
-from logger import get_logger
-from models.parser import MessageParseError, Parser
+from utils.logger import get_logger
+from utils.parser import MessageParseError, Parser
 from schemas.market_data import Snapshot, UpdateEvent
 
 logger = get_logger(__name__)

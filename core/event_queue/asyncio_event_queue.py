@@ -1,5 +1,5 @@
 import asyncio
-from models.event_queue import EventQueue
+from core.event_queue import EventQueue
 from schemas.market_data import UpdateEvent
 
 

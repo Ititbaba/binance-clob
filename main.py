@@ -1,11 +1,11 @@
 import asyncio
 
 from config import settings
-from models.binance_client import BinanceClient
-from models.event_reader import EventReader
-from models.monitor import Monitor
-from models.order_book import OrderBook
-from models.order_book_synchronizer import OrderBookSynchronizer
+from core.binance_client import BinanceClient
+from core.event_reader import EventReader
+from core.monitor import Monitor
+from core.order_book import OrderBook
+from core.order_book_synchronizer import OrderBookSynchronizer
 
 
 async def main() -> None:
